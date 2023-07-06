@@ -93,13 +93,13 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                             let newFormContent = `\n<?php require 'assets/php/landing_form.php'; ?>\n${formContent}\n<input type="hidden" name="comment" value="" />\n`;
 
                             // Find and remove the first quotation mark after the PHP require statement
-                            let quoteIndex = newFormContent.indexOf('"', newFormContent.indexOf('<?php require'));
-                            if (quoteIndex !== -1) {
-                                console.log('The first quotation mark is at index:', quoteIndex);
-                                newFormContent = newFormContent.slice(0, quoteIndex) + newFormContent.slice(quoteIndex + 1);
-                            } else {
-                                console.log('No quotation mark found in the script.');
-                            }
+                            // let quoteIndex = newFormContent.indexOf('"', newFormContent.indexOf('<?php require'));
+                            // if (quoteIndex !== -1) {
+                            //     console.log('The first quotation mark is at index:', quoteIndex);
+                            //     newFormContent = newFormContent.slice(0, quoteIndex) + newFormContent.slice(quoteIndex + 1);
+                            // } else {
+                            //     console.log('No quotation mark found in the script.');
+                            // }
 
                             return `<form${updatedAttrs}>${newFormContent}</form>`;
                         }
