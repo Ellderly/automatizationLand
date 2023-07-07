@@ -4,7 +4,7 @@ const path = require('path');
 const JSZip = require('jszip');
 const fs = require('fs-extra');
 const unzipper = require('unzipper');
-const franc = require('franc-min');
+// const franc = require('franc-min');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -18,6 +18,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const uploadedZipPath = path.join(__dirname, 'uploaded.zip');
     const unzippedFolderPath = path.join(__dirname, 'unzipped');
     const integrationDirPath = path.join(__dirname, 'integration');
+    const selectedCountry = req.body.country || 'ru';
 
     fs.emptyDirSync(unzippedFolderPath);
 
@@ -59,21 +60,33 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     let fileData = files['index.php'].buffer;
                     let data = fileData.toString('utf8');
 
+                    // Ищем все формы и сохраняем их содержимое.
+                    let forms = [];
+                    data = data.replace(/<form[^>]*>([\s\S]*?)<\/form>/g, function(match) {
+                        forms.push(match);
+                        return "<FORM_PLACEHOLDER>";
+                    });
+
+                    // Удаляем все PHP-коды вне форм.
+                    data = data.replace(/<\?php[\s\S]*?\?>/g, '');
+
+                    // Возвращаем содержимое форм на место.
+                    forms.forEach(function(form, i) {
+                        data = data.replace("<FORM_PLACEHOLDER>", form);
+                    });
+
+
 
                     data = data.replace(/\$curl\s*=\s*curl_init\(\s*"(.*?&)"\s*\.\s*http_build_query\(\$_GET\)\s*\);/g, '$curl = curl_init("$1utm_campaign={$_SERVER[\'SERVER_NAME\']}&" . http_build_query($_GET));');
 
-                    // remove all PHP codes within <form> tags that is not requiring 'landing_form.php'
                     data = data.replace(/<form[^>]*>(.*?)<\/form>/gs, function(match){
                         return match.replace(/<\?php(?!.*require 'assets\/php\/landing_form\.php';).*?\?>/gs, '');
                     });
 
                     const result = data
                         .replace(/<!doctype html>|<!DOCTYPE html>/g, '<?php\nsession_start();\n$_SESSION[\'landingViewed\'] = TRUE;\nif (isset($clickData))\n $link = "api .php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData[\'clickid\'];\nelse \n $link = "api.php?" .http_build_query($_GET);\n?>\n<!DOCTYPE html>')
-                        .replace(/<input type="hidden"[^>]*\/?>/gs, '') // remove all hidden input fields including potential inner content
-                        .replace('</body>', `<?php
- require_once 'assets/php/landing_pixel.php';
-?>\n</body>`);
-
+                        .replace(/<input type="hidden"[^>]*\/?>/gs, '')
+                        .replace('</body>', `<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>\n</body>`);
 
                     let intermediateResult = result.replace(/<form[^>]*>([\s\S]*?)<\/form>/g, function(match) {
                         return match.replace(/" \/>/g, '');
@@ -83,58 +96,43 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                         return match.replace(/"\s*>/, '" />');
                     });
 
-
-
-                    // Add the PHP script in the beginning of the form, replace action and add hidden inputs before the end of the form only when there is a type="tel" field in the form
                     finalResult = finalResult.replace(/<form([^>]*)>([\s\S]*?)<\/form>/g, function(match, formAttrs, formContent) {
                         if (formContent.includes('type="tel"')) {
-                            // Replace the action attribute
                             let updatedAttrs = formAttrs.replace(/action="api\.php"/, 'action="<?=$link;?>"');
                             let newFormContent = `\n<?php require 'assets/php/landing_form.php'; ?>\n${formContent}\n<input type="hidden" name="comment" value="" />\n`;
-
-                            // Find and remove the first quotation mark after the PHP require statement
-                            // let quoteIndex = newFormContent.indexOf('"', newFormContent.indexOf('<?php require'));
-                            // if (quoteIndex !== -1) {
-                            //     console.log('The first quotation mark is at index:', quoteIndex);
-                            //     newFormContent = newFormContent.slice(0, quoteIndex) + newFormContent.slice(quoteIndex + 1);
-                            // } else {
-                            //     console.log('No quotation mark found in the script.');
-                            // }
-
                             return `<form${updatedAttrs}>${newFormContent}</form>`;
                         }
                         return match;
                     });
 
+                    // let visibleText = data.replace(/<\?php[\s\S]*?\?>/g, '').replace(/<[^>]*>/g, '');
+//
+//                     let lang = franc(visibleText);
+//
+// // Переводим коды языков в предпочитаемые
+//                     lang = transformLanguageCode(lang);
+//
+// // Функция для преобразования кодов языков
+//                     function transformLanguageCode(code) {
+//                         switch(code) {
+//                             case 'rus':
+//                                 return 'ru';
+//                             case 'tur':
+//                                 return 'tr';
+//                             default:
+//                                 return code;
+//                         }
+//                     }
 
-                    let visibleText = data.replace(/<\?php[\s\S]*?\?>/g, '').replace(/<[^>]*>/g, '');
-
-                    let lang = franc(visibleText);
-
-// Переводим коды языков в предпочитаемые
-                    lang = transformLanguageCode(lang);
-
-// Функция для преобразования кодов языков
-                    function transformLanguageCode(code) {
-                        switch(code) {
-                            case 'rus':
-                                return 'ru';
-                            case 'tur':
-                                return 'tr';
-                            default:
-                                return code;
-                        }
-                    }
 
                     let indexLastForm = finalResult.lastIndexOf('</form>');
                     let indexFirstScriptAfterForm = finalResult.indexOf('<script', indexLastForm);
-                    finalResult = finalResult.slice(0, indexFirstScriptAfterForm) + '<input type="hidden" name="countryCode" value="' + lang + '"/>' + finalResult.slice(indexFirstScriptAfterForm);
+                    finalResult = finalResult.slice(0, indexFirstScriptAfterForm) + '<input type="hidden" name="countryCode" value="' + selectedCountry + '"/>' + finalResult.slice(indexFirstScriptAfterForm);
 
                     fileData = Buffer.from(finalResult, 'utf8');
                     zip.file(path.join(dir, 'index.php'), fileData);
 
                     delete files['index.php'];
-
                 }
 
 
@@ -197,13 +195,12 @@ $_SESSION['visited'] = true;
 
             const addIntegrationFilesToZip = (root = '') => {
                 const dirPath = path.join(integrationDirPath, root);
-                fs.readdirSync(dirPath).forEach(file => {
-                    const filePath = path.join(dirPath, file);
-                    const stats = fs.statSync(filePath);
-                    if (stats.isDirectory()) {
-                        addIntegrationFilesToZip(path.join(root, file));
+                fs.readdirSync(dirPath, { withFileTypes: true }).forEach(file => {
+                    const filePath = path.join(dirPath, file.name);
+                    if (file.isDirectory()) {
+                        addIntegrationFilesToZip(path.join(root, file.name));
                     } else {
-                        const key = path.join(root, file);  // Removed 'domainName' from the path
+                        const key = path.join(root, file.name);
                         zip.file(key, fs.readFileSync(filePath));
                     }
                 });

@@ -10,8 +10,15 @@
             color: #ffffff;
         }
 
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+
         h2 {
-            color: #ffffff;
+            color: inherit;
         }
 
         .upload-form {
@@ -20,6 +27,13 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
             background-color: #222222;
+        }
+
+        @media (prefers-color-scheme: light) {
+            .upload-form {
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                background-color: #eeeeee;
+            }
         }
 
         input[type="file"] {
@@ -40,8 +54,20 @@
             cursor: pointer;
         }
 
+        @media (prefers-color-scheme: light) {
+            input[type="submit"] {
+                background-color: #4CAF50;
+            }
+        }
+
         input[type="submit"]:hover {
             background-color: #006400;
+        }
+
+        @media (prefers-color-scheme: light) {
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
         }
     </style>
 </head>
@@ -49,9 +75,15 @@
 
 <h2>Загрузите архив с файлами</h2>
 
-<form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <input type="submit" value="Upload">
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Choose file:</label>
+    <input type="file" id="file" name="file"><br><br>
+    <label for="country">Choose a country:</label>
+    <select id="country" name="country">
+        <option value="ru">Russia</option>
+        <option value="tr">Turkey</option>
+    </select><br><br>
+    <input type="submit" value="Submit">
 </form>
 
 </body>
