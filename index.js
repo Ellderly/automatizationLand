@@ -8,9 +8,43 @@ const unzipper = require('unzipper');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.post('/updateSite', async (req, res) => {
+    const siteName = req.body.siteName;  // Получаем имя сайта из отправленной формы
+    const redirectFolderPath = path.join(__dirname, 'redirect');
+    const zip = new JSZip();
+
+    fs.readdirSync(redirectFolderPath).forEach(file => {
+        const filePath = path.join(redirectFolderPath, file);
+        const stats = fs.statSync(filePath);
+
+        // Если файл не является директорией и является 'page.php', заменяем '${site}' на siteName
+        if (!stats.isDirectory() && file === 'page.php') {
+            let data = fs.readFileSync(filePath, 'utf8');
+            data = data.replace(/\$\{site\}/g, siteName);
+            zip.file(file, Buffer.from(data, 'utf8'));
+        } else {
+            zip.file(file, fs.readFileSync(filePath));
+        }
+    });
+
+    const archiveData = await zip.generateAsync({ type: 'nodebuffer' });
+    const outputPath = path.join(__dirname, 'redirect.zip');
+    fs.writeFileSync(outputPath, archiveData);
+
+    res.download(outputPath, (err) => {
+        if (err) {
+            res.status(500).send({
+                message: 'Could not download the file. ' + err,
+            });
+        }
+        fs.unlinkSync(outputPath);
+    });
 });
 
 app.post('/upload', upload.single('file'), async (req, res) => {
@@ -67,8 +101,9 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                         return "<FORM_PLACEHOLDER>";
                     });
 
-                    // Удаляем все PHP-коды вне форм.
-                    data = data.replace(/<\?php[\s\S]*?\?>/g, '');
+                    // Удаляем все PHP-коды перед тегом <html>.
+                    data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
+
 
                     // Возвращаем содержимое форм на место.
                     forms.forEach(function(form, i) {
@@ -104,26 +139,6 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                         }
                         return match;
                     });
-
-                    // let visibleText = data.replace(/<\?php[\s\S]*?\?>/g, '').replace(/<[^>]*>/g, '');
-//
-//                     let lang = franc(visibleText);
-//
-// // Переводим коды языков в предпочитаемые
-//                     lang = transformLanguageCode(lang);
-//
-// // Функция для преобразования кодов языков
-//                     function transformLanguageCode(code) {
-//                         switch(code) {
-//                             case 'rus':
-//                                 return 'ru';
-//                             case 'tur':
-//                                 return 'tr';
-//                             default:
-//                                 return code;
-//                         }
-//                     }
-
 
                     let indexLastForm = finalResult.lastIndexOf('</form>');
                     let indexFirstScriptAfterForm = finalResult.indexOf('<script', indexLastForm);

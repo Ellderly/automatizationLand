@@ -1,0 +1,7 @@
+<?php
+
+    $site = "https://${site}";
+    $link = (!empty($_GET)) ? ($site . "?" . http_build_query($_GET)) : ($site);
+
+?>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Loading</title></head><body><section class="load-wrapp"><div class="spinner"><div class="bubble-1"></div><div class="bubble-2"></div><div class="bubble-3"></div></div></section><style>body{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:"Open Sans",sans-serif;font-weight:400;color:#777;background-color:#d8d8d8;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;margin:0;position:fixed;top:0;left:0;right:0;bottom:0;}.load-wrapp .spinner{position:relative;width:45px;height:45px;margin:0 auto;animation:loading 1.5s linear infinite;}.load-wrapp .bubble-1, .load-wrapp .bubble-2 {position:absolute;top:0;width:25px;height:25px;border-radius:100%;background-color:#4b9cdb;animation:bounce 2s ease-in-out infinite;}.load-wrapp .bubble-2{top:auto;bottom:0;animation-delay:-1s;}@keyframes loading{100%{transform:rotate(360deg);}}@keyframes bounce{0%,100%{transform:scale(0);}50%{transform:scale(1);}}</style><form action="<?="$link";?>" method="POST" id="form" style="display: none;"><button type="submit">Click me!</button></form><script>document.getElementById('form').submit();</script></body></html>
