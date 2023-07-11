@@ -2,27 +2,40 @@
 <html>
 <head>
     <style>
+        :root {
+            --primary-color: #008000;
+            --primary-red: #800000;
+            --secondary-color: #4CAF50;
+            --secondary-red: #af4c4c;
+            --primary-bg-color: #333333;
+            --secondary-bg-color: #ffffff;
+            --primary-text-color: #ffffff;
+            --secondary-text-color: #000000;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #333333;
-            color: #ffffff;
+            background-color: var(--primary-bg-color);
+            color: var(--primary-text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            transition: background-color 0.3s ease;
         }
 
         @media (prefers-color-scheme: light) {
             body {
-                background-color: #ffffff;
-                color: #000000;
+                background-color: var(--secondary-bg-color);
+                color: var(--secondary-text-color);
             }
         }
 
         #form-container, #redirect {
             display: none;
+            transition: display 0.3s ease;
         }
 
         #buttons {
@@ -32,20 +45,22 @@
         }
 
         .btn {
-            background-color: #008000;
-            color: #ffffff;
+            background-color: var(--primary-color);
+            color: var(--primary-text-color);
             border: none;
-            padding: 10px 20px;
+            padding: 15px 30px;
             text-align: center;
             text-decoration: none;
             font-size: 16px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         @media (prefers-color-scheme: light) {
             .btn {
-                background-color: #4CAF50;
+                background-color: var(--secondary-color);
+                color: var(--secondary-text-color);
             }
         }
 
@@ -57,6 +72,39 @@
             .btn:hover {
                 background-color: #45a049;
             }
+        }
+
+        /* Styles for forms */
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .btn-back{
+            background: var(--primary-red);
+            padding: 10px 30px;
+            border: none;
+            color: #fff;
+            transition: .2s;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn-back:hover{
+            background: var(--secondary-red);
+        }
+
+        form input[type="submit"], form input[type="file"], form select, form label {
+            width: 200px;
+        }
+
+        form input[type="submit"] {
+            cursor: pointer;
         }
     </style>
 
@@ -70,6 +118,12 @@
             document.getElementById('redirect').style.display = 'block';
             document.getElementById('buttons').style.display = 'none';
         }
+
+        function showButtons() {
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('redirect').style.display = 'none';
+            document.getElementById('buttons').style.display = 'flex';
+        }
     </script>
 </head>
 <body>
@@ -80,26 +134,27 @@
 </div>
 
 <div id="form-container">
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <label for="file">Choose file:</label>
-    <input type="file" id="file" name="file"><br><br>
-    <label for="country">Choose a country:</label>
-    <select id="country" name="country">
-        <option value="ru">Russia</option>
-        <option value="tr">Turkey</option>
-    </select><br><br>
-    <input type="submit" value="Submit">
-</form>
+    <button class="btn-back" onclick="showButtons()">Back</button>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file">Choose file:</label>
+        <input type="file" id="file" name="file"><br><br>
+        <label for="country">Choose a country:</label>
+        <select id="country" name="country">
+            <option value="ru">Russia</option>
+            <option value="tr">Turkey</option>
+        </select><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 <div id="redirect">
+    <button class="btn-back" onclick="showButtons()">Back</button>
     <form id="form-redirect" action="/updateSite" method="post">
         <label for="siteName">Site Name:</label>
         <input type="text" id="siteName" name="siteName" required><br><br>
         <input type="submit" value="Submit">
     </form>
 </div>
-
 
 </body>
 </html>
