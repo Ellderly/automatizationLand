@@ -125,6 +125,15 @@
             document.getElementById('buttons').style.display = 'flex';
         }
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <style>
+        .select2-results__option {
+            color: black !important;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -135,17 +144,16 @@
 
 <div id="form-container">
     <button class="btn-back" onclick="showButtons()">Back</button>
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
         <label for="file">Choose file:</label>
         <input type="file" id="file" name="file"><br><br>
-        <label for="country">Choose a country:</label>
-        <select id="country" name="country">
-            <option value="ru">Russia</option>
-            <option value="tr">Turkey</option>
-        </select><br><br>
+        <label for="country">Type a country:</label>
+        <select multiple="multiple" id="country" name="country"></select><br><br>
+        <input type="hidden" id="countryCode" name="countryCode">
         <input type="submit" value="Submit">
     </form>
 </div>
+
 
 <div id="redirect">
     <button class="btn-back" onclick="showButtons()">Back</button>
@@ -155,6 +163,36 @@
         <input type="submit" value="Submit">
     </form>
 </div>
+<script>
+    $(document).ready(function() {
+        let countryData = [];
+        fetch('https://restcountries.com/v3/all')
+            .then(response => response.json())
+            .then(data => {
+                countryData = data.map(country => ({
+                    id: country.cca2,
+                    text: country.name.common
+                }));
+                $('#country').select2({
+                    data: countryData,
+                    tags: true,
+                    tokenSeparators: [',']
+                });
+            });
+
+        const uploadForm = document.getElementById('uploadForm');
+        const countryInput = document.getElementById('country');
+        const countryCodeInput = document.getElementById('countryCode');
+
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const selectedCountries = $(countryInput).select2('data');
+            const countryCodes = selectedCountries.map(country => country.id);
+            countryCodeInput.value = countryCodes.join(',');
+            uploadForm.submit();
+        });
+    });
+</script>
 
 </body>
 </html>

@@ -1,25 +1,14 @@
-/*if ($('input[name=forename]').length) {
-    $("input[name=forename]").addClass('loading');
-    $("input[name=forename]").attr('disabled', 'disabled');
-}
-if ($('input[name=surname]').length) {
-    $("input[name=surname]").addClass('loading');
-    $("input[name=surname]").attr('disabled', 'disabled');
-}
-if ($('input[name=email]').length) {
-    $("input[name=email]").addClass('loading');
-    $("input[name=email]").attr('disabled', 'disabled');
-}
-if ($('input[name=phone]').length) {
-    $("input[name=phone]").addClass('loading');
-    $("input[name=phone]").attr('disabled', 'disabled');
-}
-if ($('button[name=submit]').length) {
-    $("button[name=submit]").addClass('loading');
-    $("button[name=submit]").attr('disabled', 'disabled');
-}*/
-
 $(document).ready(function() {
+
+    // Regex if surname doesnt exist
+    var forename_regex, forename_error;
+    if ($('input[name="surname"]').length == 0) {
+        forename_regex = /^[A-Za-zА-Яа-яЁё]+[ ][A-Za-zА-Яа-яЁё*\-?]+$/i;
+        forename_error = "";
+    } else {
+        forename_regex = /^[A-Za-zА-Яа-яЁё]{2,20}$/i;
+        forename_error = "";
+    }
 
     // Form input validation
 
@@ -28,37 +17,18 @@ $(document).ready(function() {
     });
 
     $.validator.addMethod("forename", function(value, element) {
-        return this.optional(element) || /^[\p{Letter}\p{Mark}\- ]{2,25}$/u.test(value);
-    }, "");
+        return this.optional(element) || forename_regex.test(value);
+    }, forename_error);
 
     $.validator.addMethod("surname", function(value, element) {
-        return this.optional(element) || /^[\p{Letter}\p{Mark}\- ]{2,25}$/u.test(value);
-    }, "");
-    
-    $.validator.addMethod("email", function (value, element) {
-        return (this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value));
+        return this.optional(element) || /^[A-Za-zА-Яа-яЁё*\-? ]{2,20}$/i.test(value);
     }, "");
 
-    $.validator.addMethod("phone", function (value, element) {
-          return this.optional(element) || /^5[0-9]{9}$/i.test(value);
+    $.validator.addMethod("email", function(value, element) {
+        return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
     }, "");
 
-    function functionError() {
-        window.location.href = 'success.html';
-    }
-
-    function functionBeforeSend() {
-        $("form button[name=submit]").attr("disabled", true);
-    }
-
-    function functionSuccess(data) {
-        $("form button[name=submit]").removeAttr('disabled');
-        //console.log(data);
-        window.location.href = data;
-    }
-
-    $("form input, form button[name=submit]").click(function() {
-
+    $("form input, :submit").click(function() {
         var form = $(this).parents('form:first');
         form.validate({
             rules: {
@@ -68,85 +38,144 @@ $(document).ready(function() {
                 surname: {
                     required: true,
                 },
-                phone: {
-                    required: true,
-                },
                 email: {
+                    required: true,
+                    email: true,
+                },
+                phone: {
                     required: true,
                 },
                 forename: "required forename",
                 surname: "required surname",
-                phone: "required phone",
                 email: "required email",
+                phone: "required phone",
             }
         });
-
     });
 
-    (function($) {
-        $.fn.inputFilter = function(inputFilter) {
-            return this.on(
-                "input keydown keyup mousedown mouseup select contextmenu drop",
-                function() {
-                    if (inputFilter(this.value)) {
-                        this.oldValue = this.value;
-                        this.oldSelectionStart = this.selectionStart;
-                        this.oldSelectionEnd = this.selectionEnd;
-                    } else if (this.hasOwnProperty("oldValue")) {
-                        this.value = this.oldValue;
-                        this.setSelectionRange(
-                            this.oldSelectionStart,
-                            this.oldSelectionEnd
-                        );
-                    } else {
-                        this.value = "";
-                    }
-                }
-            );
-        };
-    })(jQuery);
-
-    function limitText(field, maxChar) {
-        var ref = $(field),
-            val = ref.val();
-        if (val.length >= maxChar) {
-            ref.val(function() {
-                console.log(val.substr(0, maxChar))
-                return val.substr(0, maxChar);
-            });
-        }
-    }
-    $(document).ready(function() {
-        $(".phone").inputFilter(function(value) {
-            return /^\d*$/.test(value);
-        });
-        $(".phone").on('keyup', function() {
-            limitText(this, 10)
-        });
-    });
-
-    $("form button[name=submit]").click(function() {
-
+    $(":submit").click(function() {
         var form = $(this).parents('form:first');
         if (form.valid()) {
             var data = $(this).closest("form").serialize();
-            $.ajax({
-                url: '../mail.php?' + ((typeof($('base').attr("href")) != "undefined" && $('base').attr("href") !== null) ? $('base').attr("href").slice(0,-1) : ''),
-                type: "POST",
-                data: data,
-                dataType: "html",
-                error: functionError,
-                beforeSend: functionBeforeSend,
-                success: functionSuccess
-            });
+            console.log(data);
+            form.submit();
         }
-
     });
 
-});
+    // Phone validation
 
-$(window).on('load', function() {
-    $("form input").removeAttr('disabled');
-    $("form button[name=submit]").removeAttr('disabled');
-    $("form input").removeClass('loading');
+    let ary = Array.prototype.slice.call(document.querySelectorAll("input[name=phone]"));
+
+    ary.forEach(function(el) {
+        PhoneDisplay(el);
+    })
+
+    function PhoneDisplay(input) {
+
+        //AlterCPA code
+
+        function intlTelSetGeoCode(code) {
+            var geofields = document.querySelectorAll("input[name=country]");
+            for (var gid = 0; gid < geofields.length; gid++) geofields[gid].value = code;
+        }
+
+        function intlTelSetPhoneCode(code) {
+            var phonecode = document.querySelectorAll(".phonecc");
+            for (var pid = 0; pid < phonecode.length; pid++) phonecode[pid].value = code;
+        }
+        var initialphonecc = 0;
+        var initialphonegc = false;
+            var iti = window.intlTelInput(input, {
+                initialCountry: "auto",
+                nationalMode: true,
+                autoPlaceholder: 'aggressive',
+                formatOnDisplay: true,
+                separateDialCode: true,
+                utilsScript: "assets/landing/js/utils.js",
+                geoIpLookup: function(setgeo) {
+                    fetch("https://ipinfo.io", { headers: { 'Accept': 'application/json' } })
+                        .then(response => response.json())
+                        .then(r => setgeo((r && r.country) ? r.country : "ru"));
+                }
+            });
+            var itg = iti.getSelectedCountryData();
+            if (itg.dialCode) initialphonecc = itg.dialCode;
+            if (itg.iso2) initialphonegc = itg.iso2;
+            input.addEventListener("countrychange", function(event) {
+                var iti = window.intlTelInputGlobals.getInstance(event.target);
+                if (iti != undefined) {
+                    var geo = iti.getSelectedCountryData();
+                    intlTelSetPhoneCode(geo.dialCode);
+                    intlTelSetGeoCode(geo.iso2);
+                }
+            });
+        if (initialphonecc) intlTelSetPhoneCode(initialphonecc);
+        if (initialphonegc) intlTelSetGeoCode(initialphonegc);
+
+
+        // Valid number
+        $(input).on("change keyup", function() {
+            $.validator.addMethod("phone", function(value, element) {
+                if (iti.isValidNumber()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }, "");
+        });
+
+
+        // Mask
+        $("input[name=phone]").on("change keyup", function() {
+            var mask_regex = $("input[name=phone]").attr('placeholder').replace(/[0-9]/g, 0);
+            $("input[name=phone]").mask(mask_regex);
+        });
+        $("input[name=phone]").on("countrychange", function(e, countryData) {
+            $("input[name=phone]").val('');
+        });
+    }
+
+    // Email input
+    var EmailDomainSuggester = {
+        domains: ["yahoo.com", "gmail.com", "google.com", "hotmail.com", "me.com", "aol.com", "mac.com", "live.com", "comcast.com", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk", "facebook.com", "verizon.net", "att.net", "gmz.com", "mail.com"],
+        bindTo: $('input[name="email"]'),
+        init: function() {
+            this.addElements();
+            this.bindEvents();
+        },
+        addElements: function() {
+            this.datalist = $("<datalist />", {
+                id: 'email-options'
+            }).insertAfter(this.bindTo);
+            this.bindTo.attr("list", "email-options");
+        },
+        bindEvents: function() {
+            this.bindTo.on("keyup", this.testValue);
+        },
+        testValue: function(event) {
+            var el = $(this),
+                value = el.val();
+            if (value.indexOf("@") != -1) {
+                value = value.split("@")[0];
+                EmailDomainSuggester.addDatalist(value);
+            } else {
+                EmailDomainSuggester.datalist.empty();
+            }
+
+        },
+        addDatalist: function(value) {
+            var i, newOptionsString = "";
+            for (i = 0; i < this.domains.length; i++) {
+                newOptionsString +=
+                    "<option value='" +
+                    value +
+                    "@" +
+                    this.domains[i] +
+                    "'>";
+            }
+            this.datalist.html(newOptionsString);
+        }
+    }
+    EmailDomainSuggester.init();
+
 });
