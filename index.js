@@ -9,6 +9,7 @@ const unzipper = require('unzipper');
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -52,7 +53,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const uploadedZipPath = path.join(__dirname, 'uploaded.zip');
     const unzippedFolderPath = path.join(__dirname, 'unzipped');
     const integrationDirPath = path.join(__dirname, 'integration');
-    const selectedCountry = req.body.country || 'ru';
+    const selectedCountryCode = req.body.countryCode || 'ru';
 
     fs.emptyDirSync(unzippedFolderPath);
 
@@ -142,7 +143,31 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
                     let indexLastForm = finalResult.lastIndexOf('</form>');
                     let indexFirstScriptAfterForm = finalResult.indexOf('<script', indexLastForm);
-                    finalResult = finalResult.slice(0, indexFirstScriptAfterForm) + '<input type="hidden" name="countryCode" value="' + selectedCountry + '"/>' + finalResult.slice(indexFirstScriptAfterForm);
+                    finalResult = finalResult.slice(0, indexFirstScriptAfterForm) + '<input type="hidden" name="countryCode" value="' + selectedCountryCode + '"/>' + finalResult.slice(indexFirstScriptAfterForm);
+
+                    // Проверяем наличие файла CSS и, при необходимости, добавляем его перед </head>
+                    if (!finalResult.includes('<link href="assets/landing/css/landing.css" rel="stylesheet" type="text/css">')) {
+                        finalResult = finalResult.replace('</head>', '<link href="assets/landing/css/landing.css" rel="stylesheet" type="text/css">\n</head>');
+                    }
+
+// Создаем объект с информацией о скриптах
+                    let scripts = {
+                        'assets/landing/js/jquery.min.js': '<script type="text/javascript" src="assets/landing/js/jquery.min.js"></script>\n',
+                        'assets/landing/js/jquery.validate.min.js': '<script type="text/javascript" src="assets/landing/js/jquery.validate.min.js"></script>\n',
+                        'assets/landing/js/form.js': '<script type="text/javascript" src="assets/landing/js/form.js"></script>\n'
+                    };
+
+// Проверяем наличие каждого скрипта и, при необходимости, добавляем его
+                    for (let scriptPath in scripts) {
+                        if (!finalResult.includes(`<script src="${scriptPath}"></script>`) && !finalResult.includes(scripts[scriptPath])) {
+                            // Если в документе есть PHP-скрипт, добавляем JS-скрипт перед ним
+                            if (finalResult.includes("<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>")) {
+                                finalResult = finalResult.replace("<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>", scripts[scriptPath] + "<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>");
+                            } else { // Иначе добавляем JS-скрипт перед </body>
+                                finalResult = finalResult.replace('</body>', scripts[scriptPath] + '</body>');
+                            }
+                        }
+                    }
 
                     fileData = Buffer.from(finalResult, 'utf8');
                     zip.file(path.join(dir, 'index.php'), fileData);
@@ -236,6 +261,9 @@ $_SESSION['visited'] = true;
                 }
             });
         });
-    });
+});
 
 app.listen(3000, () => console.log('Server is running on port 3000'));
+
+
+
