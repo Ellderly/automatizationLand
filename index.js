@@ -95,6 +95,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     let fileData = files['index.php'].buffer;
                     let data = fileData.toString('utf8');
 
+                    data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
+
                     // Ищем все формы и сохраняем их содержимое.
                     let forms = [];
                     data = data.replace(/<form[^>]*>([\s\S]*?)<\/form>/g, function(match) {
@@ -103,7 +105,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     });
 
                     // Удаляем все PHP-коды перед тегом <html>.
-                    data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
+                    // data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
+                    data = data.replace(/<\?php[\s\S]*?\?>/g, '');
 
 
                     // Возвращаем содержимое форм на место.

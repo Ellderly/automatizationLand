@@ -33,7 +33,8 @@
             }
         }
 
-        #form-container, #redirect {
+        #form-container,
+        #redirect {
             display: none;
             transition: display 0.3s ease;
         }
@@ -86,7 +87,8 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
-        .btn-back{
+
+        .btn-back {
             background: var(--primary-red);
             padding: 10px 30px;
             border: none;
@@ -95,16 +97,50 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .btn-back:hover{
+
+        .btn-back:hover {
             background: var(--secondary-red);
         }
 
-        form input[type="submit"], form input[type="file"], form select, form label {
+        form input[type="submit"],
+        form input[type="file"],
+        form select,
+        form label {
             width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        form input[type="file"] {
+            padding: 5px;
         }
 
         form input[type="submit"] {
             cursor: pointer;
+        }
+
+        /* Styling select dropdown */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: var(--secondary-color);
+            color: var(--secondary-text-color);
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: var(--secondary-text-color);
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: var(--secondary-red);
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+            color: var(--secondary-red);
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:active {
+            color: var(--secondary-red);
         }
     </style>
 
