@@ -95,26 +95,20 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     let fileData = files['index.php'].buffer;
                     let data = fileData.toString('utf8');
 
+                    // Удаление PHP-кода перед <html>
                     data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
 
-                    // Ищем все формы и сохраняем их содержимое.
                     let forms = [];
                     data = data.replace(/<form[^>]*>([\s\S]*?)<\/form>/g, function(match) {
                         forms.push(match);
                         return "<FORM_PLACEHOLDER>";
                     });
 
-                    // Удаляем все PHP-коды перед тегом <html>.
-                    // data = data.replace(/<\?php[\s\S]*?\?(?=<html>)/g, '');
-                    data = data.replace(/<\?php[\s\S]*?\?>/g, '');
+                    data = data.replace(/<\?php[\s\S]*?\?(?=<\/html>)/g, '');
 
-
-                    // Возвращаем содержимое форм на место.
                     forms.forEach(function(form, i) {
                         data = data.replace("<FORM_PLACEHOLDER>", form);
                     });
-
-
 
                     data = data.replace(/\$curl\s*=\s*curl_init\(\s*"(.*?&)"\s*\.\s*http_build_query\(\$_GET\)\s*\);/g, '$curl = curl_init("$1utm_campaign={$_SERVER[\'SERVER_NAME\']}&" . http_build_query($_GET));');
 
@@ -123,7 +117,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     });
 
                     const result = data
-                        .replace(/<!doctype html>|<!DOCTYPE html>/g, '<?php\nsession_start();\n$_SESSION[\'landingViewed\'] = TRUE;\nif (isset($clickData))\n $link = "api .php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData[\'clickid\'];\nelse \n $link = "api.php?" .http_build_query($_GET);\n?>\n<!DOCTYPE html>')
+                        .replace(/<!doctype html>|<!DOCTYPE html>/g, '<?php\nsession_start();\n$_SESSION[\'landingViewed\'] = TRUE;\nif (isset($clickData))\n $link = "api .php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData[\'clickid\'];\nelse \n $link = "api.php?" . http_build_query($_GET);\n?>\n<!DOCTYPE html>')
                         .replace(/<input type="hidden"[^>]*\/?>/gs, '')
                         .replace('</body>', `<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>\n</body>`);
 
