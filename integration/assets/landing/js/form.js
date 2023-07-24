@@ -2,11 +2,11 @@ var phoneRegex, numLimit, phoneccValue, countryName, countryList;
 var countryData = {
     ru: { phoneRegex: /^9[0-9]{9}$/i, numLimit: 10, phoneccValue: "7", countryName: "Russia", phonePlaceholder: "912 345-67-89" },
     kz: { phoneRegex: /^7[0-9]{9}$/i, numLimit: 10, phoneccValue: "7", countryName: "Kazakhstan", phonePlaceholder: "771 000 9998" },
-    tr: { phoneRegex: /^5[0-9]{9}$/i, numLimit: 10, phoneccValue: "90", countryName: "Turkey", phonePlaceholder: "501 234-56-78" },
-    ua: { phoneRegex: /^[0-9]{10}$/i, numLimit: 10, phoneccValue: "380", countryName: "Ukraine", phonePlaceholder: "912 345-67-89" },
+    tr: { phoneRegex: /^[0-9]{10}$/i, numLimit: 10, phoneccValue: "90", countryName: "Turkey", phonePlaceholder: "501 234-56-78" },
+    ua: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "380", countryName: "Ukraine", phonePlaceholder: "12 34-56-789" },
     es: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "34", countryName: "Spain", phonePlaceholder: "612 34 56 78" },
     in: { phoneRegex: /^[0-9]{10}$/i, numLimit: 10, phoneccValue: "91", countryName: "India", phonePlaceholder: "81234 56789" },
-    md: { phoneRegex: /^[0-9]{8}$/i, numLimit: 8, phoneccValue: "373", countryName: "Moldova", phonePlaceholder: "621 12 345" },
+    md: { phoneRegex: /^[0-9]{8,9}$/i, numLimit: 9, phoneccValue: "373", countryName: "Moldova", phonePlaceholder: "0621 12 345" },
     ca: { phoneRegex: /^[0-9]{10}$/i, numLimit: 10, phoneccValue: "1", countryName: "Canada", phonePlaceholder: "506-234-5678" },
     cz: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "420", countryName: "Czech Republic", phonePlaceholder: "601 123 456" },
     mx: { phoneRegex: /^[0-9]{10}$/i, numLimit: 10, phoneccValue: "52", countryName: "Mexico", phonePlaceholder: "222 123 4567" },
@@ -14,6 +14,33 @@ var countryData = {
     pe: { phoneRegex: /^[0-9]{8,9}$/i, numLimit: 9, phoneccValue: "51", countryName: "Peru", phonePlaceholder: "912 345 678" },
     de: { phoneRegex: /^[0-9]{6,11}$/i, numLimit: 11, phoneccValue: "49", countryName: "Germany", phonePlaceholder: "1512 3456789" },
     it: { phoneRegex: /^[0-9]{6,10}$/i, numLimit: 10, phoneccValue: "39", countryName: "Italy", phonePlaceholder: "312 345 6789" },
+    sk: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "421", countryName: "Slovakia", phonePlaceholder: "912 123 456" },
+    az: { phoneRegex: /^[0-9]{9,12}$/i, numLimit: 12, phoneccValue: "994", countryName: "Azerbaijan", phonePlaceholder: "40 123 45 67" },
+    am: { phoneRegex: /^[0-9]{8,10}$/i, numLimit: 10, phoneccValue: "374", countryName: "Armenia", phonePlaceholder: "77 123456" },
+    by: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "375", countryName: "Belarus", phonePlaceholder: "29 1234567" },
+    kg: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "996", countryName: "Kyrgyzstan", phonePlaceholder: "700 123456" },
+    tj: { phoneRegex: /^[0-9]{9,12}$/i, numLimit: 12, phoneccValue: "992", countryName: "Tajikistan", phonePlaceholder: "93 1234567" },
+    uz: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "998", countryName: "Uzbekistan", phonePlaceholder: "90 1234567" },
+    ee: { phoneRegex: /^[0-9]{7,8}$/i, numLimit: 8, phoneccValue: "372", countryName: "Estonia", phonePlaceholder: "51234567" },
+    lv: { phoneRegex: /^[0-9]{8,9}$/i, numLimit: 9, phoneccValue: "371", countryName: "Latvia", phonePlaceholder: "22 123456" },
+    lt: { phoneRegex: /^[0-9]{8,9}$/i, numLimit: 9, phoneccValue: "370", countryName: "Lithuania", phonePlaceholder: "612 34567" },
+    ge: { phoneRegex: /^[0-9]{9}$/i, numLimit: 9, phoneccValue: "995", countryName: "Georgia", phonePlaceholder: "555 123456" },
+    at: { phoneRegex: /^[0-9]{7,13}$/i, numLimit: 13, phoneccValue: "43", countryName: "Austria", phonePlaceholder: "660 1234567" },
+    be: { phoneRegex: /^[0-9]{8,10}$/i, numLimit: 10, phoneccValue: "32", countryName: "Belgium", phonePlaceholder: "470 123456" },
+    bg: { phoneRegex: /^[0-9]{7,9}$/i, numLimit: 9, phoneccValue: "359", countryName: "Bulgaria", phonePlaceholder: "888 123456" },
+    dk: { phoneRegex: /^[0-9]{8,11}$/i, numLimit: 11, phoneccValue: "45", countryName: "Denmark", phonePlaceholder: "42 12 34 56" },
+    fi: { phoneRegex: /^[0-9]{8,12}$/i, numLimit: 12, phoneccValue: "358", countryName: "Finland", phonePlaceholder: "041 2345678" },
+    fr: { phoneRegex: /^[0-9]{9,11}$/i, numLimit: 11, phoneccValue: "33", countryName: "France", phonePlaceholder: "06 12 34 56 78" },
+    is: { phoneRegex: /^[0-9]{7,9}$/i, numLimit: 9, phoneccValue: "354", countryName: "Iceland", phonePlaceholder: "661 1234" },
+    ie: { phoneRegex: /^[0-9]{8,11}$/i, numLimit: 11, phoneccValue: "353", countryName: "Ireland", phonePlaceholder: "085 1234567" },
+    lu: { phoneRegex: /^[0-9]{8,12}$/i, numLimit: 12, phoneccValue: "352", countryName: "Luxembourg", phonePlaceholder: "628 123456" },
+    me: { phoneRegex: /^[0-9]{9,12}$/i, numLimit: 12, phoneccValue: "382", countryName: "Montenegro", phonePlaceholder: "067 123456" },
+    nl: { phoneRegex: /^[0-9]{9,11}$/i, numLimit: 11, phoneccValue: "31", countryName: "Netherlands", phonePlaceholder: "06 12345678" },
+    no: { phoneRegex: /^[0-9]{8,12}$/i, numLimit: 12, phoneccValue: "47", countryName: "Norway", phonePlaceholder: "412 34 567" },
+    pt: { phoneRegex: /^[0-9]{9,12}$/i, numLimit: 12, phoneccValue: "351", countryName: "Portugal", phonePlaceholder: "912 345 678" },
+    ro: { phoneRegex: /^[0-9]{9,12}$/i, numLimit: 12, phoneccValue: "40", countryName: "Romania", phonePlaceholder: "0712 345 678" },
+    se: { phoneRegex: /^[0-9]{8,12}$/i, numLimit: 12, phoneccValue: "46", countryName: "Sweden", phonePlaceholder: "070-123 45 67" },
+    gb: { phoneRegex: /^[0-9]{10,11}$/i, numLimit: 11, phoneccValue: "44", countryName: "United Kingdom", phonePlaceholder: "07700 900123" },
 };
 
 var countryValue = Array.from(new Set($('input[name=countryCode]').val().toLowerCase().split(',').map(function(item) {
@@ -177,7 +204,7 @@ function numRule(countryValue) {
     $('form').each(function() {
         if ($(this).find('input[name=forename]').length > 0) {
 
-            var inpBgClr = $(this).find('input').css('background-color');
+            var inpBgClr = $(this).find('input[name=forename]').css('background-color');
             $(this).find('input').attr('style', function(index, value) {
                 if (value === undefined) {
                     value = "";
@@ -306,7 +333,6 @@ $("button[type=submit]").click(function() {
         });
     }
 });
-
 
 // Phone validation
 
