@@ -1,4 +1,4 @@
-if ($('input[name=forename]').length) {
+/*if ($('input[name=forename]').length) {
     $("input[name=forename]").addClass('loading');
     $("input[name=forename]").attr('disabled', 'disabled');
 }
@@ -17,7 +17,7 @@ if ($('input[name=phone]').length) {
 if ($('button[name=submit]').length) {
     $("button[name=submit]").addClass('loading');
     $("button[name=submit]").attr('disabled', 'disabled');
-}
+}*/
 
 $(document).ready(function() {
 
@@ -34,9 +34,13 @@ $(document).ready(function() {
     $.validator.addMethod("surname", function(value, element) {
         return this.optional(element) || /^[\p{Letter}\p{Mark}\- ]{2,25}$/u.test(value);
     }, "");
-
+    
     $.validator.addMethod("email", function (value, element) {
         return (this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value));
+    }, "");
+
+    $.validator.addMethod("phone", function (value, element) {
+          return this.optional(element) || /^5[0-9]{9}$/i.test(value);
     }, "");
 
     function functionError() {
@@ -79,6 +83,48 @@ $(document).ready(function() {
 
     });
 
+    (function($) {
+        $.fn.inputFilter = function(inputFilter) {
+            return this.on(
+                "input keydown keyup mousedown mouseup select contextmenu drop",
+                function() {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(
+                            this.oldSelectionStart,
+                            this.oldSelectionEnd
+                        );
+                    } else {
+                        this.value = "";
+                    }
+                }
+            );
+        };
+    })(jQuery);
+
+    function limitText(field, maxChar) {
+        var ref = $(field),
+            val = ref.val();
+        if (val.length >= maxChar) {
+            ref.val(function() {
+                console.log(val.substr(0, maxChar))
+                return val.substr(0, maxChar);
+            });
+        }
+    }
+    $(document).ready(function() {
+        $(".phone").inputFilter(function(value) {
+            return /^\d*$/.test(value);
+        });
+        $(".phone").on('keyup', function() {
+            limitText(this, 10)
+        });
+    });
+
     $("form button[name=submit]").click(function() {
 
         var form = $(this).parents('form:first');
@@ -96,67 +142,6 @@ $(document).ready(function() {
         }
 
     });
-
-    // Phone validation
-
-    let ary = Array.prototype.slice.call(document.querySelectorAll("input[name=phone]"));
-
-    ary.forEach(function(el) {
-        PhoneDisplay(el);
-    })
- 
-    function PhoneDisplay(input) {
-
-        function intlTelSetGeoCode(code) {
-            var geofields = document.querySelectorAll("input[name=country]");
-            for (var gid = 0; gid < geofields.length; gid++) geofields[gid].value = code;
-        }
-
-        function intlTelSetPhoneCode(code) {
-            var phonecode = document.querySelectorAll("input[name=countryDialCode]");
-            for (var pid = 0; pid < phonecode.length; pid++) phonecode[pid].value = code;
-        }
-
-        var iti = window.intlTelInput(input, {
-            initialCountry: $('input[type=hidden][name=country]').val(),
-            onlyCountries: $('input[type=hidden][name=onlyCountries]').val().split(','),
-            nationalMode: true,
-            autoPlaceholder: 'aggressive',
-            allowDropdown: (($('input[type=hidden][name=allowDropdown]').val() == 'true') ? true : false),
-            formatOnDisplay: true,
-            separateDialCode: true,
-            utilsScript: "assets/landing/js/utils.js"
-        });
-        $("input[name=countryDialCode]").val("+" + iti.getSelectedCountryData().dialCode);
-
-        // Countrychange
-        input.addEventListener("countrychange", function(event) {
-            var iti = window.intlTelInputGlobals.getInstance(event.target);
-            if (iti != undefined) {
-                var geo = iti.getSelectedCountryData();
-                intlTelSetPhoneCode(geo.dialCode);
-                intlTelSetGeoCode(geo.iso2);
-            }
-        });
- 
-        // Valid number
-        $(input).on("change keyup", function() {
-            $.validator.addMethod("phone", function(value, element) {
-                if (iti.isValidNumber()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }, "");
-        });
- 
-        // Mask
-        $("input[name=phone]").on("change keyup", function() {
-            var mask_regex = $("input[name=phone]").attr('placeholder').replace(/[0-9]/g, 0);
-            $("input[name=phone]").mask(mask_regex);
-        });
-
-    }
 
 });
 

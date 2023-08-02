@@ -200,16 +200,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     const data = fileData.toString('utf8');
                     const result = data
                         .replace(/<!DOCTYPE html>/i, '<?php\nsession_start();\n?>\n<!DOCTYPE html>')
-                        .replace(/<\/head>/i, '<?=(($_GET[\'url\']) ? "<meta http-equiv=\\\"refresh\\\" content=\\\"3; url={$_GET[\'url\']}\\\" />" : "");?>\n</head>')
-                        .replace(/<\/body>/i, `<?php
-require_once 'assets/php/success_pixel.php';
-if (!($_SESSION['visited'] ?? false)) {
-?>
-<!-- PIXEL -->
-<?php
-}
-$_SESSION['visited'] = true;
-?>\n</body>`);
+                        .replace(/<\/head>/i, '<?=(($_GET[\'url\']) ? "<meta http-equiv=\\\"refresh\\\" content=\\\"3; url={$_GET[\'url\']}\\\" />" : "");?>\n<?php\nrequire_once \'assets/php/success_pixel.php\';\nif (!($_SESSION[\'visited\'] ?? false)) {\n?>\n<!-- PIXEL -->\n<?php\n}\n$_SESSION[\'visited\'] = true;\n?>\n</head>');
                     fileData = Buffer.from(result, 'utf8');
 
                     // If success.php already exists, delete it before renaming success.html to success.php

