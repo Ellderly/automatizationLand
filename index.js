@@ -156,7 +156,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
 // Проверяем наличие каждого скрипта и, при необходимости, добавляем его
                     for (let scriptPath in scripts) {
-                        if (!finalResult.includes(`<script src="${scriptPath}"></script>`) && !finalResult.includes(scripts[scriptPath])) {
+                        let regex = new RegExp(`<script\\s+type=(["'])text\\/javascript\\1\\s+src=(["'])${scriptPath.replace('.', '\\.')}\\2><\\/script>`, 'i');
+                        if (!regex.test(finalResult)) {
                             // Если в документе есть PHP-скрипт, добавляем JS-скрипт перед ним
                             if (finalResult.includes("<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>")) {
                                 finalResult = finalResult.replace("<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>", scripts[scriptPath] + "<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>");
@@ -251,7 +252,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         });
 });
 
-app.listen(10000, () => console.log('Server is running on port 10000'));
+app.listen(3000, () => console.log('Server is running on port 10000'));
 
 
 
