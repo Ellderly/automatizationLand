@@ -185,9 +185,12 @@
         <input type="file" id="file" name="file"><br><br>
         <label for="country">Type a country:</label>
         <select multiple="multiple" id="country" name="country"></select><br><br>
+        <label for="red">With redirect:</label> <!-- Заменяем на 'red' -->
+        <input type="checkbox" id="red" name="redirect"><br><br> <!-- Заменяем на 'red' -->
         <input type="hidden" id="countryCode" name="countryCode">
         <input type="submit" value="Submit">
     </form>
+
 </div>
 
 
@@ -220,6 +223,7 @@
         const uploadForm = document.getElementById('uploadForm');
         const countryInput = document.getElementById('country');
         const countryCodeInput = document.getElementById('countryCode');
+        const redInput = document.getElementById('red');
 
         uploadForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -241,9 +245,9 @@
 
             const countryCodes = selectedCountries.map(country => country.id);
             countryCodeInput.value = countryCodes.join(',');
+            redInput.value = redInput.checked ? 'yes' : 'no';  // Заменяем на 'red'
             uploadForm.submit();
         });
-
     });
 
 </script>

@@ -54,6 +54,43 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const unzippedFolderPath = path.join(__dirname, 'unzipped');
     const integrationDirPath = path.join(__dirname, 'integration');
     const selectedCountryCode = req.body.countryCode || 'ru';
+    const redirectCode = req.body.redirect === 'yes' ? `<?php
+session_start();
+$_SESSION['landingViewed'] = TRUE;
+if (isset($clickData))
+ $link = "api .php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData['clickid'];
+else 
+ $link = "api.php?" . http_build_query($_GET);
+
+ 	$checkUserAgent      = strripos($_SERVER['HTTP_USER_AGENT'], 'bot');
+	if ($checkUserAgent !== false) {
+		http_response_code(404);
+		error_log("Bot has been blocked. HTTP_USER_AGENT: " . $_SERVER['HTTP_USER_AGENT']);
+		require_once 'notfoundpage.html';
+		exit;
+	}
+
+    // Указываем проверку меток utm_source и fb. Поменяем наименования меток в случае необходимости
+    if (//!isset($_SERVER['HTTP_REFERER']) || !preg_match('/' . $checkDomain . '/', $_SERVER['HTTP_REFERER']) ||
+        !isset($_GET['fb']) || $_GET['fb'] == '' ||
+        !isset($_GET['utm_source']) || $_GET['utm_source'] == '') {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/notfoundpage.html';
+        exit;
+    }
+?>` : `<?php
+session_start();
+$_SESSION['landingViewed'] = TRUE;
+if (isset($clickData))
+ $link = "api.php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData['clickid'];
+else 
+ $link = "api.php?" . http_build_query($_GET);
+?>`;
+
+    const redirectEnabled = req.body.redirect === 'yes';
+
+
+// Используйте `redirectCode` вместо первоначального кода в функции, которая обрабатывает загрузку файла.
+
 
     fs.emptyDirSync(unzippedFolderPath);
 
@@ -117,7 +154,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     });
 
                     const result = data
-                        .replace(/<!doctype html>|<!DOCTYPE html>/g, '<?php\nsession_start();\n$_SESSION[\'landingViewed\'] = TRUE;\nif (isset($clickData))\n $link = "api .php?" . http_build_query($_GET) . (empty($_GET) ? ("clickid=") : ("&clickid=")) . $clickData[\'clickid\'];\nelse \n $link = "api.php?" . http_build_query($_GET);\n?>\n<!DOCTYPE html>')
+                        .replace(/<!doctype html>|<!DOCTYPE html>/g, redirectCode)
                         .replace(/<input type="hidden"[^>]*\/?>/gs, '')
                         .replace('</body>', `<?php\nrequire_once 'assets/php/landing_pixel.php';\n?>\n</body>`);
 
@@ -222,6 +259,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                 }
             }
 
+
             const addIntegrationFilesToZip = (root = '') => {
                 const dirPath = path.join(integrationDirPath, root);
                 fs.readdirSync(dirPath, { withFileTypes: true }).forEach(file => {
@@ -238,6 +276,13 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
             addIntegrationFilesToZip();
 
+            if (redirectEnabled) {
+                const redRobotsPath = path.join(__dirname, 'red', 'robots.txt');
+                if (fs.existsSync(redRobotsPath)) {
+                    zip.file('robots.txt', fs.readFileSync(redRobotsPath));
+                }
+            }
+
             const archiveData = await zip.generateAsync({ type: 'nodebuffer' });
             const outputPath = path.join(__dirname, 'modified_files.zip');
             fs.writeFileSync(outputPath, archiveData);
@@ -252,7 +297,4 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         });
 });
 
-app.listen(3000, () => console.log('Server is running on port 10000'));
-
-
-
+app.listen(3000, () => console.log('Server is running on port 3000'));
