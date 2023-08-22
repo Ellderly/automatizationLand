@@ -4,6 +4,7 @@ $urls = [ "https://dozateam.com/api/wm/push.json?id=165-c11081a0423c4c2c7e8cd9d4
 $data = $_POST;
 $data["ip"] = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER["REMOTE_ADDR"];
 $data["ua"] = $_SERVER["HTTP_USER_AGENT"];
+$data["utm_campaign"] = $_SERVER['SERVER_NAME'];
 $data["domain"] = $_SERVER["HTTP_X_FORWARDED_HOST"] ?? $_SERVER["HTTP_X_HOST"] ?? $_SERVER["HTTP_HOST"] ?? $_SERVER["SERVER_NAME"];
 if (isset( $data["phonecc"] )) $data["phone"] = $data["phonecc"].$data["phone"];
 $data = http_build_query( $data );
